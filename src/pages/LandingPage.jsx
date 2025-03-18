@@ -172,7 +172,7 @@ const LandingPage = () => {
                 <div className="absolute -inset-0.5 rounded-2xl bg-gradient-to-r from-rose-500 to-indigo-500 opacity-30 blur-xl"></div>
                 <div className="relative overflow-hidden rounded-2xl shadow-2xl">
                   <img
-                    src="/placeholder.svg?height=720&width=1280"
+                    src="/images/openshop.png"
                     alt="Open Shop Dashboard Preview"
                     className="w-full h-auto"
                   />
@@ -255,23 +255,15 @@ const LandingPage = () => {
           <div className="relative max-w-5xl mx-auto">
             <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-rose-500 to-indigo-500 opacity-30 blur"></div>
             <div className="relative overflow-hidden rounded-3xl shadow-2xl">
-              <div className="aspect-video bg-zinc-900">
-                <img
-                  src="/placeholder.svg?height=720&width=1280"
-                  alt="Demo Video Thumbnail"
-                  className="w-full h-full object-cover opacity-80"
-                />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <Button
-                    size="lg"
-                    className="rounded-full w-20 h-20 bg-white/90 hover:bg-white text-rose-600 hover:text-rose-700 shadow-xl"
-                    onClick={() => setVideoModalOpen(true)}
-                  >
-                    <PlayIcon className="h-8 w-8" />
-                    <span className="sr-only">Play Demo</span>
-                  </Button>
-                </div>
-              </div>
+              {/* Replace this with your actual video */}
+              <video
+                className="w-full aspect-auto object-cover h-full"
+                controls
+                poster="/images/openshop.png"
+              >
+                <source src="/videos/video.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
             </div>
           </div>
 
@@ -516,7 +508,7 @@ const LandingPage = () => {
 
       <Footer />
 
-      {/* Video Modal */}
+      {/* Video Modal - You can keep this if you want a fullscreen option */}
       {videoModalOpen && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
@@ -551,16 +543,10 @@ const LandingPage = () => {
             </Button>
             <div className="overflow-hidden rounded-2xl border border-zinc-700 bg-black shadow-2xl">
               <div className="aspect-video">
-                <img
-                  src="/placeholder.svg?height=720&width=1280"
-                  alt="Demo Video"
-                  className="object-cover w-full h-full opacity-70"
-                />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <p className="text-center text-white/70">
-                    Demo video would play here
-                  </p>
-                </div>
+                <video className="w-full h-full object-cover" controls autoPlay>
+                  <source src="/videos/demo.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
               </div>
             </div>
           </div>
