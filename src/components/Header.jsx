@@ -1,12 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ModeToggle } from "./mode-toggle";
+import { useAuth } from "../contexts/authContext";
+import { doSignOut } from "../firebase/auth";
 
 const Header = () => {
+  const currentUser = useAuth();
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -18,6 +22,15 @@ const Header = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleSignOut = async () => {
+    try {
+      await doSignOut();
+      navigate("/login");
+    } catch (error) {
+      console.error("Sign out error:", error);
+    }
+  };
 
   const navItems = [
     { label: "Features", href: "#features" },
@@ -61,21 +74,36 @@ const Header = () => {
 
           <div className="flex items-center gap-4">
             <ModeToggle />
-            <div className="hidden md:flex items-center gap-3">
-              <Button
-                variant="ghost"
-                className="text-zinc-700 dark:text-zinc-300 hover:text-rose-600 dark:hover:text-rose-400"
-                asChild
-              >
-                <Link to="/login">Log In</Link>
-              </Button>
-              <Button
-                asChild
-                className="rounded-full bg-gradient-to-r from-rose-600 to-purple-600 hover:from-rose-700 hover:to-purple-700 text-white"
-              >
-                <Link to="/signup">Sign Up</Link>
-              </Button>
-            </div>
+            {currentUser ? (
+              <div className="hidden md:flex items-center gap-3">
+                <div className="text-sm text-zinc-700 dark:text-zinc-300 mr-2">
+                  {currentUser.displayName || currentUser.email}
+                </div>
+                <Button
+                  variant="ghost"
+                  className="text-zinc-700 dark:text-zinc-300 hover:text-rose-600 dark:hover:text-rose-400"
+                  onClick={handleSignOut}
+                >
+                  Log Out
+                </Button>
+              </div>
+            ) : (
+              <div className="hidden md:flex items-center gap-3">
+                <Button
+                  variant="ghost"
+                  className="text-zinc-700 dark:text-zinc-300 hover:text-rose-600 dark:hover:text-rose-400"
+                  asChild
+                >
+                  <Link to="/login">Log In</Link>
+                </Button>
+                <Button
+                  asChild
+                  className="rounded-full bg-gradient-to-r from-rose-600 to-purple-600 hover:from-rose-700 hover:to-purple-700 text-white"
+                >
+                  <Link to="/signup">Sign Up</Link>
+                </Button>
+              </div>
+            )}
 
             <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
               <SheetTrigger asChild>
@@ -131,23 +159,49 @@ const Header = () => {
                   </nav>
 
                   <div className="mt-auto py-8 flex flex-col gap-4">
-                    <Button
-                      variant="outline"
-                      className="w-full justify-start"
-                      asChild
-                    >
-                      <Link to="/login" onClick={() => setIsMenuOpen(false)}>
-                        Log In
-                      </Link>
-                    </Button>
-                    <Button
-                      className="w-full bg-gradient-to-r from-rose-600 to-purple-600 hover:from-rose-700 hover:to-purple-700 text-white"
-                      asChild
-                    >
-                      <Link to="/signup" onClick={() => setIsMenuOpen(false)}>
-                        Sign Up
-                      </Link>
-                    </Button>
+                    {currentUser ? (
+                      <>
+                        <div className="text-sm mb-2">
+                          {currentUser.displayName || currentUser.email}
+                        </div>
+                        <Button
+                          variant="outline"
+                          className="w-full justify-start"
+                          onClick={() => {
+                            handleSignOut();
+                            setIsMenuOpen(false);
+                          }}
+                        >
+                          Log Out
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        <Button
+                          variant="outline"
+                          className="w-full justify-start"
+                          asChild
+                        >
+                          <Link
+                            to="/login"
+                            onClick={() => setIsMenuOpen(false)}
+                          >
+                            Log In
+                          </Link>
+                        </Button>
+                        <Button
+                          className="w-full bg-gradient-to-r from-rose-600 to-purple-600 hover:from-rose-700 hover:to-purple-700 text-white"
+                          asChild
+                        >
+                          <Link
+                            to="/signup"
+                            onClick={() => setIsMenuOpen(false)}
+                          >
+                            Sign Up
+                          </Link>
+                        </Button>
+                      </>
+                    )}
                   </div>
                 </div>
               </SheetContent>

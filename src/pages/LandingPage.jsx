@@ -183,29 +183,6 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Brands Section */}
-      <section className="py-12 bg-white dark:bg-zinc-900 border-y border-zinc-200 dark:border-zinc-800">
-        <div className="container px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-sm font-medium text-zinc-500 dark:text-zinc-400 mb-8">
-            TRUSTED BY LEADING E-COMMERCE BRANDS
-          </p>
-          <div className="flex flex-wrap justify-center gap-x-12 gap-y-8">
-            {[1, 2, 3, 4, 5].map((i) => (
-              <div
-                key={i}
-                className="h-8 grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition-all duration-300"
-              >
-                <img
-                  src={`/placeholder-logo.svg?text=BRAND${i}`}
-                  alt={`Brand ${i}`}
-                  className="h-full"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Features Section */}
       <section className="py-24 bg-white dark:bg-zinc-900" id="features">
         <div className="container px-4 sm:px-6 lg:px-8">
