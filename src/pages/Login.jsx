@@ -30,6 +30,7 @@ const Login = () => {
       try {
         setIsSigningIn(true);
         await doSignInWithEmailAndPassword(email, password);
+        window.location.href = "https://admin-dashboard-phi-amber.vercel.app/";
         // Success - the redirect will happen automatically due to the Navigate component
       } catch (err) {
         setError(err.message);
