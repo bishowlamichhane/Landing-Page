@@ -8,7 +8,14 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   signOut,
+  setPersistence,
+  browserLocalPersistence,
 } from "firebase/auth"
+
+// Ensure persistence is set to LOCAL
+setPersistence(auth, browserLocalPersistence).catch((error) => {
+  console.error("Firebase persistence error:", error)
+})
 
 export const doCreateUserWithEmailAndPassword = async (email, password) => {
   return createUserWithEmailAndPassword(auth, email, password)
