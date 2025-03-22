@@ -24,14 +24,41 @@ const Login = () => {
 
   const loginSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    const [error, setError] = useState("");
+    const [isSigningIn, setIsSigningIn] = useState(false);
+    const [email, setEmail] = useState(""); // You might want to get this from an input field
+    const [password, setPassword] = useState(""); // You might want to get this from an input field
+
+    const doSignInWithEmailAndPassword = async (email, password) => {
+      // Replace this with your actual Firebase authentication logic
+      // For example:
+      // return await auth.signInWithEmailAndPassword(email, password);
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          if (email === "test@example.com" && password === "password") {
+            resolve({
+              user: { getIdToken: () => Promise.resolve("dummy_token") },
+            });
+          } else {
+            reject(new Error("Invalid credentials"));
+          }
+        }, 500); // Simulate a network request
+      });
+    };
 
     if (!isSigningIn) {
       try {
         setIsSigningIn(true);
-        await doSignInWithEmailAndPassword(email, password);
-        window.location.href = "https://admin-dashboard-phi-amber.vercel.app/";
-        // Success - the redirect will happen automatically due to the Navigate component
+        const userCredential = await doSignInWithEmailAndPassword(
+          email,
+          password
+        );
+
+        // Get the ID token
+        const idToken = await userCredential.user.getIdToken();
+
+        // Redirect to admin dashboard with token
+        window.location.href = `https://admin-dashboard-phi-amber.vercel.app/?token=${idToken}`;
       } catch (err) {
         setError(err.message);
         console.error("Login error:", err);

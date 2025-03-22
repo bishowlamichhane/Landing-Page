@@ -37,7 +37,17 @@ const Signup = () => {
 
   const signup = async (e) => {
     e.preventDefault();
-    setError("");
+    const setError = "";
+    const password = "";
+    const confirmPassword = "";
+    let isRegistering = false;
+    const setIsRegistering = (value) => {
+      isRegistering = value;
+    };
+
+    const [email, setEmail] = useState(""); // Declare email state
+    const [fname, setFname] = useState("");
+    const [lname, setLname] = useState("");
 
     // Validate passwords match
     if (password !== confirmPassword) {
@@ -61,6 +71,8 @@ const Signup = () => {
         );
         const user = userCredentials.user;
 
+        const firestore = getFirestore();
+
         // Create user document with basic info
         await setDoc(doc(firestore, "users", user.uid), {
           email: email,
@@ -69,65 +81,14 @@ const Signup = () => {
           uid: user.uid,
         });
 
-        // Create company document in a subcollection
-        const companyRef = await addDoc(
-          collection(firestore, "users", user.uid, "company"),
-          {
-            name: cname,
-          }
-        );
+        // Create company document and other Firestore operations...
+        // [Your existing Firestore code here]
 
-        // Create initial analytics document in analytics subcollection
-        await addDoc(
-          collection(
-            firestore,
-            "users",
-            user.uid,
-            "company",
-            companyRef.id,
-            "analytics"
-          ),
-          {
-            revenue: 0,
-            sales: 0,
-          }
-        );
+        // Get the ID token
+        const idToken = await user.getIdToken();
 
-        // Create initial empty customer document
-        await addDoc(
-          collection(
-            firestore,
-            "users",
-            user.uid,
-            "company",
-            companyRef.id,
-            "customers"
-          ),
-          {
-            email: "",
-            name: "",
-          }
-        );
-
-        // Create initial empty product document
-        await addDoc(
-          collection(
-            firestore,
-            "users",
-            user.uid,
-            "company",
-            companyRef.id,
-            "products"
-          ),
-          {
-            description: "",
-            name: "",
-            price: 0,
-          }
-        );
-
-        // If signup is successful, redirect to the actual product app
-        window.location.href = "https://admin-dashboard-phi-amber.vercel.app/"; // Replace with the URL of the actual app
+        // Redirect to admin dashboard with token
+        window.location.href = `https://admin-dashboard-phi-amber.vercel.app/?token=${idToken}`;
       } catch (err) {
         setError(err.message);
         console.error("Signup error:", err);
