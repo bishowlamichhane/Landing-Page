@@ -323,7 +323,9 @@ const LandingPage = () => {
                       }`}
                       asChild
                     >
-                      <Link to="/signup">Start Free Trial</Link>
+                      <Link to={`/signup?plan=${plan.name.toLowerCase()}`}>
+                        Start Free Trial
+                      </Link>
                     </Button>
 
                     <ul className="space-y-4">
@@ -387,7 +389,9 @@ const LandingPage = () => {
                         }`}
                         asChild
                       >
-                        <Link to="/signup">Start Free Trial</Link>
+                        <Link to={`/signup?plan=${plan.name.toLowerCase()}`}>
+                          Start Free Trial
+                        </Link>
                       </Button>
 
                       <ul className="space-y-4">
@@ -465,7 +469,7 @@ const LandingPage = () => {
                 size="lg"
                 className="rounded-full bg-white text-rose-600 hover:bg-zinc-100 hover:text-rose-700 shadow-xl shadow-rose-700/20"
               >
-                <Link to="/signup">
+                <Link to="/signup?plan=professional">
                   Start Your Free Trial{" "}
                   <ArrowRightIcon className="ml-2 h-4 w-4" />
                 </Link>

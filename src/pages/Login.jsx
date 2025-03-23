@@ -29,9 +29,28 @@ const Login = () => {
     if (!isSigningIn) {
       try {
         setIsSigningIn(true);
-        await doSignInWithEmailAndPassword(email, password);
-        window.location.href = "https://admin-dashboard-phi-amber.vercel.app/";
-        // Success - the redirect will happen automatically due to the Navigate component
+        const userCredential = await doSignInWithEmailAndPassword(
+          email,
+          password
+        );
+
+        // Get the ID token
+        const idToken = await userCredential.user.getIdToken();
+
+        // Determine if we're in development or production
+        const isLocalhost =
+          window.location.hostname === "localhost" ||
+          window.location.hostname === "127.0.0.1";
+
+        // Set the appropriate redirect URL - using HTTP for localhost, not HTTPS
+        const redirectUrl = isLocalhost
+          ? `http://localhost:5174/?token=${idToken}` // Note: HTTP not HTTPS
+          : `https://admin-dashboard-phi-amber.vercel.app/?token=${idToken}`;
+
+        console.log("Redirecting to:", redirectUrl);
+
+        // Redirect to admin dashboard with token
+        window.location.href = redirectUrl;
       } catch (err) {
         setError(err.message);
         console.error("Login error:", err);
@@ -47,8 +66,25 @@ const Login = () => {
     if (!isSigningIn) {
       try {
         setIsSigningIn(true);
-        await doSignInWithGoogle();
-        // Success - the redirect will happen automatically
+        const result = await doSignInWithGoogle();
+
+        // Get the ID token
+        const idToken = await result.user.getIdToken();
+
+        // Determine if we're in development or production
+        const isLocalhost =
+          window.location.hostname === "localhost" ||
+          window.location.hostname === "127.0.0.1";
+
+        // Set the appropriate redirect URL - using HTTP for localhost, not HTTPS
+        const redirectUrl = isLocalhost
+          ? `http://localhost:5174/?token=${idToken}` // Note: HTTP not HTTPS
+          : `https://admin-dashboard-phi-amber.vercel.app/?token=${idToken}`;
+
+        console.log("Redirecting to:", redirectUrl);
+
+        // Redirect to admin dashboard with token
+        window.location.href = redirectUrl;
       } catch (err) {
         setError(err.message);
         console.error("Google sign-in error:", err);
