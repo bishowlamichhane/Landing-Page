@@ -7,6 +7,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ModeToggle } from "./mode-toggle";
 import { useAuth } from "../contexts/authContext";
 import { doSignOut } from "../firebase/auth";
+import AdminButton from "./AdminButton";
 
 const Header = () => {
   const currentUser = useAuth();
@@ -70,6 +71,7 @@ const Header = () => {
                 {item.label}
               </a>
             ))}
+            <AdminButton />
           </nav>
 
           <div className="flex items-center gap-4">
@@ -156,6 +158,7 @@ const Header = () => {
                         {item.label}
                       </a>
                     ))}
+                    <AdminButton />
                   </nav>
 
                   <div className="mt-auto py-8 flex flex-col gap-4">

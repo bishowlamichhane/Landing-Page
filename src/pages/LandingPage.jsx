@@ -161,7 +161,7 @@ const LandingPage = () => {
                   <Button
                     variant="outline"
                     size="lg"
-                    className="rounded-full border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                    className="rounded-full border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer"
                     onClick={() => setVideoModalOpen(true)}
                   >
                     <PlayIcon className="mr-2 h-4 w-4" /> Watch Demo
